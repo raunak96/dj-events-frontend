@@ -1,9 +1,12 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import styles from "styles/Layout.module.css";
+import Banner from "./Banner";
 import Footer from "./Footer";
 import Header from "./Header";
 
 const Layout = ({ title, keywords, description, children }) => {
+	const router = useRouter();
 	return (
 		<>
 			<Head>
@@ -12,6 +15,7 @@ const Layout = ({ title, keywords, description, children }) => {
 				<meta name="keywords" content={keywords.join(", ")} />
 			</Head>
 			<Header />
+			{router.pathname === "/" && <Banner />}
 			<div className={styles.container}>{children}</div>
 			<Footer />
 		</>
