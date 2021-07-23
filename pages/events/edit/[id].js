@@ -10,6 +10,15 @@ import axios from "axios";
 import moment from "moment";
 import Image from "next/image";
 import { FaImage } from "react-icons/fa";
+import dynamic from "next/dynamic";
+
+const Modal = dynamic(
+	async () => {
+		const { default: Modal } = await import("components/Modal");
+		return Modal;
+	},
+	{ ssr: false }
+);
 
 const EditEventPage = ({ evt }) => {
 	const [values, setValues] = useState({
@@ -22,6 +31,7 @@ const EditEventPage = ({ evt }) => {
 		date: moment(evt.date).format("yyyy-MM-DD"),
 		image: evt.image?.formats?.thumbnail?.url,
 	});
+	const [showModal, setShowModal] = useState(false);
 	const { name, performers, venue, address, date, time, description, image } =
 		values;
 	const router = useRouter();
@@ -154,6 +164,9 @@ const EditEventPage = ({ evt }) => {
 				onClick={() => setShowModal(true)}>
 				<FaImage /> Set Image
 			</button>
+			<Modal show={showModal} onClose={() => setShowModal(false)}>
+				Image Upload
+			</Modal>
 		</Layout>
 	);
 };
