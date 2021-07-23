@@ -1,25 +1,30 @@
 import { useRouter } from "next/router";
 import Layout from "components/Layout";
-import events from "components/data";
 import styles from "styles/Event.module.css";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import { API_URL } from "config/";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const EventPage = ({ evt }) => {
 	const router = useRouter();
 
-	const deleteEvent = () => {
-		console.log("Delete");
+	const deleteEvent = async () => {
+		if (confirm("Are you sure you want to delete?")) {
+			try {
+				await axios.delete(`${API_URL}/events/${evt.id}`);
+				router.push("/events");
+			} catch (err) {
+				toast.error(err.response.data);
+			}
+		}
 	};
 
 	return (
-		<Layout
-			title={`${
-				router.query.slug ? `${router.query.slug} - ` : ""
-			} Event`}>
+		<Layout title={`${evt.name} Event`}>
 			<div className={styles.event}>
 				<div className={styles.controls}>
 					<Link href={`/events/edit/${evt.id}`}>
@@ -35,17 +40,20 @@ const EventPage = ({ evt }) => {
 					{new Date(evt.date).toDateString("en-IN")} at {evt.time}
 				</span>
 				<h1>{evt.name}</h1>
-				{evt.image && (
-					<div className={styles.image}>
-						<Image
-							src={evt.image.formats.large.url}
-							alt="Event Image"
-							width={960}
-							height={600}
-							objectFit="cover"
-						/>
-					</div>
-				)}
+				<ToastContainer />
+				<div className={styles.image}>
+					<Image
+						src={
+							evt?.image?.formats?.large?.url ??
+							"https://res.cloudinary.com/rawn/image/upload/v1627041391/large_event_default_5085837679.png"
+						}
+						alt="Event Image"
+						width={960}
+						height={600}
+						objectFit="cover"
+					/>
+				</div>
+
 				<h3>Performers</h3>
 				<p>{evt.performers}</p>
 				<h3>Description:</h3>

@@ -8,8 +8,8 @@ const EventItem = ({ evt }) => {
 			<div className={styles.img}>
 				<Image
 					src={
-						evt.image.formats.thumbnail.url ??
-						"/images/event-default.png"
+						evt?.image?.formats?.thumbnail?.url ??
+						"https://res.cloudinary.com/rawn/image/upload/v1627041391/thumbnail_event_default_5085837679.png"
 					}
 					alt={evt.name}
 					height={100}
