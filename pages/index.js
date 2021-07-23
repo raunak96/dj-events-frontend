@@ -1,6 +1,7 @@
+import axios from "axios";
 import EventItem from "components/EventItem";
 import Layout from "components/Layout";
-import events from "components/data";
+import { API_URL } from "config/index";
 import Link from "next/link";
 
 const HomePage = ({ events }) => {
@@ -24,8 +25,16 @@ const HomePage = ({ events }) => {
 export default HomePage;
 
 export async function getStaticProps(context) {
-	return {
-		props: { events: events.slice(0, 3) },
-		revalidate: 1,
-	};
+	try {
+		const { data: events } = await axios.get(
+			`${API_URL}/events?_sort=date:asc&_limit=3`
+		);
+		return {
+			props: { events },
+			revalidate: 1,
+		};
+	} catch (err) {
+		console.log(err);
+		return { props: { events: [] } };
+	}
 }

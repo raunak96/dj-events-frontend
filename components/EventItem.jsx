@@ -7,7 +7,10 @@ const EventItem = ({ evt }) => {
 		<div className={styles.event}>
 			<div className={styles.img}>
 				<Image
-					src={evt.image ?? "/images/event-default.png"}
+					src={
+						evt.image.formats.thumbnail.url ??
+						"/images/event-default.png"
+					}
 					alt={evt.name}
 					height={100}
 					width={170}
@@ -15,7 +18,7 @@ const EventItem = ({ evt }) => {
 			</div>
 			<div className={styles.info}>
 				<span>
-					{evt.date} at {evt.time}
+					{new Date(evt.date).toDateString("en-IN")} at {evt.time}
 				</span>
 				<h3>{evt.name}</h3>
 			</div>
