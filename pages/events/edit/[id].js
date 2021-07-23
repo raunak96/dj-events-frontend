@@ -11,6 +11,7 @@ import moment from "moment";
 import Image from "next/image";
 import { FaImage } from "react-icons/fa";
 import dynamic from "next/dynamic";
+import ImageUpload from "components/ImageUpload";
 
 const Modal = dynamic(
 	async () => {
@@ -70,6 +71,10 @@ const EditEventPage = ({ evt }) => {
 	const handleInputChange = e => {
 		const { name, value } = e.target;
 		setValues(prev => ({ ...prev, [name]: value }));
+	};
+	const handleImageUpload = image => {
+		setValues(prev => ({ ...prev, image: image?.formats?.thumbnail?.url }));
+		setShowModal(false);
 	};
 
 	return (
@@ -161,11 +166,15 @@ const EditEventPage = ({ evt }) => {
 			)}
 			<button
 				className="btn-secondary"
+				style={{ display: "block" }}
 				onClick={() => setShowModal(true)}>
 				<FaImage /> Set Image
 			</button>
 			<Modal show={showModal} onClose={() => setShowModal(false)}>
-				Image Upload
+				<ImageUpload
+					eventId={evt.id}
+					handleImageUpload={handleImageUpload}
+				/>
 			</Modal>
 		</Layout>
 	);
