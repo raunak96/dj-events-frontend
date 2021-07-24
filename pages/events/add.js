@@ -7,6 +7,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { API_URL } from "config/";
 import axios from "axios";
+import { FaImage } from "react-icons/fa";
+import ImagePreview from "components/ImagePreview";
 
 const AddEventPage = () => {
 	const [values, setValues] = useState({
@@ -20,6 +22,8 @@ const AddEventPage = () => {
 	});
 	const { name, performers, venue, address, date, time, description } =
 		values;
+
+	const [image, setImage] = useState("");
 	const router = useRouter();
 
 	const handleSubmit = async e => {
@@ -42,8 +46,14 @@ const AddEventPage = () => {
 			));
 			return;
 		}
+		const formData = new FormData();
+		formData.append("data", JSON.stringify(values));
+		if (image) formData.append(`files.image`, image, image.name);
 		try {
-			const { data: evt } = await axios.post(`${API_URL}/events`, values);
+			const { data: evt } = await axios.post(
+				`${API_URL}/events`,
+				formData
+			);
 			router.push(`/events/${evt.slug}`);
 		} catch (err) {
 			console.log(err);
@@ -121,6 +131,21 @@ const AddEventPage = () => {
 							value={time}
 							onChange={handleInputChange}
 						/>
+					</div>
+					<div className={styles.fileInput}>
+						<label htmlFor="image">
+							<FaImage />
+							<p>Set Image</p>
+						</label>
+						<input
+							type="file"
+							id="image"
+							name="image"
+							onChange={e => setImage(e.target.files[0])}
+						/>
+					</div>
+					<div>
+						<ImagePreview image={image} />
 					</div>
 				</div>
 				<div>

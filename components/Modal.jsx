@@ -7,7 +7,8 @@ const Modal = ({ show, onClose, children, title }) => {
 	useEffect(() => {
 		if (show) {
 			ref.current.scrollIntoView();
-		}
+			document.documentElement.style = "overflow:hidden";
+		} else document.documentElement.style = "overflow:auto";
 	}, [show]);
 	return (
 		show && (
@@ -16,7 +17,7 @@ const Modal = ({ show, onClose, children, title }) => {
 					className={styles.modal}
 					onClick={e => e.stopPropagation()}>
 					<div className={styles.header}>
-						<a href="#" onClick={onClose}>
+						<a href="#" onClick={onClose} style={{ zIndex: "2" }}>
 							<FaTimes />
 						</a>
 					</div>

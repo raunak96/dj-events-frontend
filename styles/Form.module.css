@@ -16,7 +16,7 @@
 	resize: none;
 }
 
-.form :is(input:not([type="submit"]), textarea) {
+.form :is(input:not(:is([type="submit"], [type="file"])), textarea) {
 	background-color: whitesmoke;
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	outline: none;
@@ -31,6 +31,23 @@
 	border: 1px #ccc solid;
 	background-color: #f4f4f4;
 	padding: 10px;
+}
+
+.fileInput input {
+	width: 0;
+	height: 0;
+	opacity: 0;
+	padding: 0;
+}
+.fileInput label {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	column-gap: 10px;
+	background-color: whitesmoke;
+	border-radius: 6px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .form input[type="submit"] {
