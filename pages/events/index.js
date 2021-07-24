@@ -2,37 +2,56 @@ import axios from "axios";
 import EventItem from "components/EventItem";
 import Layout from "components/Layout";
 import { API_URL } from "config";
+import { ROWS_PER_PAGE } from "config/";
+import useIntersectionObserver from "hooks/useIntersectionObserver";
 import debounce from "lodash/debounce";
-import qs from "qs";
 import { useMemo, useRef, useState } from "react";
 import styles from "styles/Events.module.css";
+import query from "utils";
 
-const EventsPage = ({ events }) => {
+const EventsPage = ({ events, total }) => {
 	const searchRef = useRef("");
 	const [eventsState, setEvents] = useState({
 		filteredEvents: events,
 		searchTerm: "",
 	});
+	const [page, setPage] = useState(0);
 	const { filteredEvents, searchTerm } = eventsState;
+
+	const hasMore = useMemo(() => {
+		return total > (page + 1) * ROWS_PER_PAGE;
+	}, [page, total]);
+	const onIntersection = async () => {
+		const nextPage = (page + 1) * ROWS_PER_PAGE;
+
+		const { data } = await axios.get(
+			`${API_URL}/events?_sort=date:asc&${query(
+				searchTerm
+			)}&_start=${nextPage}&_limit=${ROWS_PER_PAGE}`
+		);
+
+		setEvents(prev => ({
+			...prev,
+			filteredEvents: [...prev.filteredEvents, ...data],
+		}));
+		setPage(prev => prev + 1);
+	};
+	const intersectionRef = useIntersectionObserver({
+		onIntersection,
+		hasMore,
+	});
 
 	const debouncedSearch = useMemo(
 		() =>
 			debounce(async term => {
 				try {
-					const query = qs.stringify({
-						_where: {
-							_or: [
-								{ name_contains: term },
-								{ performers_contains: term },
-								{ description_contains: term },
-								{ venue_contains: term },
-							],
-						},
-					});
 					const { data } = await axios.get(
-						`${API_URL}/events?${query}`
+						`${API_URL}/events?_sort=date:asc&${query(
+							term
+						)}&_start=0&_limit=${ROWS_PER_PAGE}`
 					);
 					setEvents({ filteredEvents: data, searchTerm: term });
+					setPage(0);
 				} catch (err) {
 					console.log(err);
 				}
@@ -76,8 +95,16 @@ const EventsPage = ({ events }) => {
 			{filteredEvents.length === 0 ? (
 				<h3>No events to show</h3>
 			) : (
-				filteredEvents.map(event => (
-					<EventItem key={event.id} evt={event} />
+				filteredEvents.map((event, index) => (
+					<EventItem
+						key={event.id}
+						evt={event}
+						ref={
+							index === filteredEvents.length - 2
+								? intersectionRef
+								: null
+						}
+					/>
 				))
 			)}
 		</Layout>
@@ -88,15 +115,21 @@ export default EventsPage;
 
 export async function getStaticProps(context) {
 	try {
-		const { data: events } = await axios.get(
-			`${API_URL}/events?_sort=date:asc`
+		const eventsPromise = axios.get(
+			`${API_URL}/events?_sort=date:asc&_start=0&_limit=${ROWS_PER_PAGE}`
 		);
+		const countPromise = axios.get(`${API_URL}/events/count`);
+		const [{ data: events }, { data: total }] = await Promise.all([
+			eventsPromise,
+			countPromise,
+		]);
+
 		return {
-			props: { events },
-			revalidate: 1,
+			props: { events, total },
+			revalidate: 10,
 		};
 	} catch (err) {
 		console.log(err);
-		return { props: { events: [] } };
+		return { props: { events: [], total: 0 } };
 	}
 }

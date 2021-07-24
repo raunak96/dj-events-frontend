@@ -1,10 +1,11 @@
 import styles from "styles/EventItem.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import { forwardRef } from "react";
 
-const EventItem = ({ evt }) => {
+const EventItem = forwardRef(function EventItem({ evt }, ref) {
 	return (
-		<div className={styles.event}>
+		<div className={styles.event} ref={ref}>
 			<div className={styles.img}>
 				<Image
 					src={
@@ -29,6 +30,6 @@ const EventItem = ({ evt }) => {
 			</div>
 		</div>
 	);
-};
+});
 
 export default EventItem;
