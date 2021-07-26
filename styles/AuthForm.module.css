@@ -1,0 +1,36 @@
+.auth {
+	max-width: 500px;
+	margin: auto;
+	padding: 30px;
+	box-shadow: 0px 1px 20px 5px rgba(50, 50, 50, 0.52);
+}
+
+.auth label {
+	display: block;
+	margin-bottom: 10px;
+	opacity: 0.8;
+}
+
+.auth input:not([type="submit"]) {
+	width: 100%;
+	background-color: whitesmoke;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	outline: none;
+	border-radius: 5px;
+	font-size: 1rem;
+	padding: 0.7rem 1rem;
+}
+.auth input:not([type="submit"]):focus {
+	background-color: #fff;
+	box-shadow: 0px 1px 2px 0px rgba(50, 50, 50, 0.52);
+}
+
+.auth input[type="submit"] {
+	margin-top: 20px;
+	width: 100%;
+	font-size: 17px;
+}
+
+.auth div {
+	margin-bottom: 20px;
+}
