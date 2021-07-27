@@ -51,8 +51,19 @@ h1 {
 	margin: 0 20px;
 	cursor: pointer;
 }
+.btn-primary {
+	font: inherit;
+	font-size: 20px;
+	background: #4285f4;
+	color: #fff !important;
+	border: 0;
+	border-radius: 5px;
+	padding: 12px 15px;
+	margin: 0 20px;
+	cursor: pointer;
+}
 
-.btn-secondary:hover {
+:is(.btn-secondary, .btn-primary):hover {
 	opacity: 0.8;
 }
 

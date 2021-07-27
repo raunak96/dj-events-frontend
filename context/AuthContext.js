@@ -1,7 +1,7 @@
 import axios from "axios";
 import { NEXT_URL } from "config/";
 import { useRouter } from "next/router";
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 import reducer, { SETUSER, SETERROR } from "./reducer";
 
 const initialState = { currentUser: null, error: null };
@@ -63,9 +63,17 @@ const AuthProvider = ({ children }) => {
 		}
 	};
 
+	const setUser = useCallback(
+		user => {
+			dispatch({ type: SETUSER, payload: user });
+			router.push("/account/dashboard");
+		},
+		[router]
+	);
+
 	return (
 		<AuthContext.Provider
-			value={{ currentUser, error, register, login, logout }}>
+			value={{ currentUser, error, register, login, logout, setUser }}>
 			{children}
 		</AuthContext.Provider>
 	);
