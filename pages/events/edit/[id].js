@@ -182,7 +182,7 @@ const EditEventPage = ({ evt }) => {
 
 export default EditEventPage;
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, req }) {
 	try {
 		const { data } = await axios.get(`${API_URL}/events/${params.id}`);
 		return {

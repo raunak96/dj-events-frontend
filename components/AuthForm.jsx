@@ -108,7 +108,9 @@ const AuthForm = ({ isLogin = true, title = "Log In", onSubmit, error }) => {
 					{isLogin ? (
 						<>
 							Don&lsquo;t have an account?
-							<Link href="/account/register">Register here.</Link>
+							<Link href="/account/register">
+								&nbsp;Register here.
+							</Link>
 						</>
 					) : (
 						<>

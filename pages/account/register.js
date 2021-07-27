@@ -10,7 +10,12 @@ const RegisterPage = () => {
 	};
 	return (
 		<Layout title="User Registration">
-			<AuthForm title="Sign Up" isLogin={false} onSubmit={handleSubmit} />
+			<AuthForm
+				title="Sign Up"
+				isLogin={false}
+				onSubmit={handleSubmit}
+				error={error}
+			/>
 		</Layout>
 	);
 };

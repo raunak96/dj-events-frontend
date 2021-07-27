@@ -1,19 +1,13 @@
 const ACTION_TYPES = {
-	REGISTER: "registerUser",
-	LOGIN: "loginUser",
-	LOGOUT: "logoutUser",
+	SETUSER: "setuser",
 	SETERROR: "setError",
-	ISLOGGEDIN: "isLoggedIn",
 };
 
-export const { REGISTER, LOGIN, LOGOUT, SETERROR, ISLOGGEDIN } = ACTION_TYPES;
+export const { SETUSER, SETERROR } = ACTION_TYPES;
 
 const reducer = (state, action) => {
 	switch (action.type) {
-		case REGISTER:
-		case LOGIN:
-		case ISLOGGEDIN:
-		case LOGOUT:
+		case SETUSER:
 			return { ...state, currentUser: action.payload, error: null };
 		case SETERROR:
 			return { ...state, error: action.payload };

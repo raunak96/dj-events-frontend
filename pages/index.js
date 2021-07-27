@@ -13,7 +13,7 @@ const HomePage = ({ events }) => {
 			) : (
 				events.map(event => <EventItem key={event.id} evt={event} />)
 			)}
-			{events.length && (
+			{events.length > 0 && (
 				<Link href="/events">
 					<a className="btn-secondary">View all Events</a>
 				</Link>

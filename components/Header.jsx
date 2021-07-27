@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { AuthContext } from "context/AuthContext";
 
 const Header = () => {
-	const { user, logout } = useContext(AuthContext);
+	const { currentUser, logout } = useContext(AuthContext);
 	return (
 		<header className={styles.header}>
 			<div className={styles.logo}>
@@ -20,7 +20,7 @@ const Header = () => {
 							<a>Events</a>
 						</Link>
 					</li>
-					{user ? (
+					{currentUser ? (
 						<>
 							<li>
 								<Link href="/events/add">

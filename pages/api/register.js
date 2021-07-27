@@ -5,12 +5,16 @@ import cookie from "cookie";
 const handler = async (req, res) => {
 	switch (req.method) {
 		case "POST":
-			const { identifier, password } = req.body;
+			const { username, email, password } = req.body;
 			try {
-				const { data } = await axios.post(`${API_URL}/auth/local`, {
-					identifier,
-					password,
-				});
+				const { data } = await axios.post(
+					`${API_URL}/auth/local/register`,
+					{
+						email,
+						password,
+						username,
+					}
+				);
 				res.setHeader(
 					"Set-Cookie",
 					cookie.serialize("token", data.jwt, {
