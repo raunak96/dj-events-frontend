@@ -9,8 +9,9 @@ import { API_URL } from "config/";
 import axios from "axios";
 import { FaImage } from "react-icons/fa";
 import ImagePreview from "components/ImagePreview";
+import parseCookie from "helpers/";
 
-const AddEventPage = () => {
+const AddEventPage = ({ token }) => {
 	const [values, setValues] = useState({
 		name: "",
 		performers: "",
@@ -52,11 +53,20 @@ const AddEventPage = () => {
 		try {
 			const { data: evt } = await axios.post(
 				`${API_URL}/events`,
-				formData
+				formData,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
 			);
 			router.push(`/events/${evt.slug}`);
 		} catch (err) {
-			console.log(err);
+			if (
+				err.response.data.statusCode === 403 ||
+				err.response.data.statusCode === 401
+			)
+				return toast.error("You are not signed In.");
 			toast.error("Something went wrong!");
 		}
 	};
@@ -166,3 +176,15 @@ const AddEventPage = () => {
 };
 
 export default AddEventPage;
+
+export async function getServerSideProps({ req }) {
+	const { token } = parseCookie(req);
+	if (!token) {
+		return {
+			redirect: { destination: "/account/login" },
+		};
+	}
+	return {
+		props: { token },
+	};
+}

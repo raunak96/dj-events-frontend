@@ -5,7 +5,7 @@ import styles from "styles/Form.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-const ImageUpload = ({ eventId, handleImageUpload }) => {
+const ImageUpload = ({ eventId, handleImageUpload, token }) => {
 	const fileRef = useRef();
 
 	const handleSubmit = async e => {
@@ -17,7 +17,11 @@ const ImageUpload = ({ eventId, handleImageUpload }) => {
 		formData.append("field", "image");
 
 		try {
-			const { data } = await axios.post(`${API_URL}/upload`, formData);
+			const { data } = await axios.post(`${API_URL}/upload`, formData, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			handleImageUpload(data[0]);
 		} catch (err) {
 			toast.error("Image upload failed");

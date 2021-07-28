@@ -52,8 +52,9 @@ const AuthProvider = ({ children }) => {
 
 	const logout = async () => {
 		try {
-			const { data } = await axios.post(`${NEXT_URL}/api/logout`);
+			await axios.post(`${NEXT_URL}/api/logout`);
 			dispatch({ type: SETUSER, payload: null });
+			router.push("/");
 		} catch (err) {
 			dispatch({
 				type: SETERROR,

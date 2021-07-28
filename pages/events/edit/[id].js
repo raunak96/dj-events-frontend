@@ -12,6 +12,7 @@ import Image from "next/image";
 import { FaImage } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import ImageUpload from "components/ImageUpload";
+import parseCookie from "helpers/";
 
 const Modal = dynamic(
 	async () => {
@@ -21,7 +22,7 @@ const Modal = dynamic(
 	{ ssr: false }
 );
 
-const EditEventPage = ({ evt }) => {
+const EditEventPage = ({ evt, token }) => {
 	const [values, setValues] = useState({
 		name: evt.name,
 		performers: evt.performers,
@@ -30,7 +31,6 @@ const EditEventPage = ({ evt }) => {
 		time: evt.time,
 		description: evt.description,
 		date: moment(evt.date).format("yyyy-MM-DD"),
-		image: evt.image?.formats?.thumbnail?.url,
 	});
 	const [showModal, setShowModal] = useState(false);
 	const { name, performers, venue, address, date, time, description, image } =
@@ -60,11 +60,20 @@ const EditEventPage = ({ evt }) => {
 		try {
 			const { data } = await axios.put(
 				`${API_URL}/events/${evt.id}`,
-				values
+				values,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
 			);
 			router.push(`/events/${data.slug}`);
 		} catch (err) {
-			console.log(err);
+			if (
+				err.response.data.statusCode === 403 ||
+				err.response.data.statusCode === 401
+			)
+				return toast.error("Unauthorized.");
 			toast.error("Something went wrong!");
 		}
 	};
@@ -174,6 +183,7 @@ const EditEventPage = ({ evt }) => {
 				<ImageUpload
 					eventId={evt.id}
 					handleImageUpload={handleImageUpload}
+					token={token}
 				/>
 			</Modal>
 		</Layout>
@@ -183,10 +193,16 @@ const EditEventPage = ({ evt }) => {
 export default EditEventPage;
 
 export async function getServerSideProps({ params, req }) {
+	const { token } = parseCookie(req);
+	if (!token) {
+		return {
+			redirect: { destination: "/account/login" },
+		};
+	}
 	try {
 		const { data } = await axios.get(`${API_URL}/events/${params.id}`);
 		return {
-			props: { evt: data },
+			props: { evt: data, token },
 		};
 	} catch (err) {
 		console.log(err);

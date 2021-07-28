@@ -15,7 +15,7 @@ const Redirect = ({ user }) => {
 
 	return (
 		<div>
-			<p>Redirecting...</p>
+			<p style={{ marginLeft: "25px" }}>Redirecting...</p>
 		</div>
 	);
 };

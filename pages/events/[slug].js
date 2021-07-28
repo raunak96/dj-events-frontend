@@ -10,23 +10,23 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
 const EventPage = ({ evt }) => {
-	const router = useRouter();
+	// const router = useRouter();
 
-	const deleteEvent = async () => {
-		if (confirm("Are you sure you want to delete?")) {
-			try {
-				await axios.delete(`${API_URL}/events/${evt.id}`);
-				router.push("/events");
-			} catch (err) {
-				toast.error(err.response.data);
-			}
-		}
-	};
+	// const deleteEvent = async () => {
+	// 	if (confirm("Are you sure you want to delete?")) {
+	// 		try {
+	// 			await axios.delete(`${API_URL}/events/${evt.id}`);
+	// 			router.push("/events");
+	// 		} catch (err) {
+	// 			toast.error(err.response.data);
+	// 		}
+	// 	}
+	// };
 
 	return (
 		<Layout title={`${evt.name} Event`}>
 			<div className={styles.event}>
-				<div className={styles.controls}>
+				{/* <div className={styles.controls}>
 					<Link href={`/events/edit/${evt.id}`}>
 						<a>
 							<FaPencilAlt /> Edit Event
@@ -35,7 +35,7 @@ const EventPage = ({ evt }) => {
 					<a href="#" className={styles.delete} onClick={deleteEvent}>
 						<FaTimes /> Delete Event
 					</a>
-				</div>
+				</div> */}
 				<span>
 					{new Date(evt.date).toDateString("en-IN")} at {evt.time}
 				</span>
@@ -91,7 +91,7 @@ export async function getStaticProps({ params }) {
 		);
 		return {
 			props: { evt: events[0] },
-			revalidate: 1,
+			revalidate: 20,
 		};
 	} catch (err) {
 		console.log(err);
