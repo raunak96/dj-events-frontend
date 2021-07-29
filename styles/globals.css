@@ -12,6 +12,30 @@ body {
 	line-height: 1.8;
 }
 
+html::-webkit-scrollbar {
+	width: 0.9rem;
+}
+
+html::-webkit-scrollbar-track {
+	background: none;
+}
+
+html::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 10px;
+	height: 10px;
+	background-clip: padding-box;
+	border: 3.5px solid rgba(0, 0, 0, 0);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+html::-webkit-scrollbar-thumb:active {
+	background-color: rgba(0, 0, 0, 0.55);
+}
+
 a {
 	text-decoration: none;
 	color: steelblue;
@@ -75,21 +99,4 @@ h1 {
 
 .btn-icon svg {
 	margin-right: 5px;
-}
-
-.map-container {
-	height: 400px;
-}
-
-.sidebar {
-	background-color: rgba(35, 55, 75, 0.9);
-	color: #ffffff;
-	padding: 6px 12px;
-	font-family: monospace;
-	z-index: 1;
-	position: absolute;
-	top: 0;
-	left: 0;
-	margin: 12px;
-	border-radius: 4px;
 }

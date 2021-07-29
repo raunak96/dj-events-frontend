@@ -200,14 +200,19 @@ export async function getServerSideProps({ params, req }) {
 		};
 	}
 	try {
-		const { data } = await axios.get(`${API_URL}/events/${params.id}`);
+		const { data } = await axios.get(`${API_URL}/events/me/${params.id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		return {
 			props: { evt: data, token },
 		};
 	} catch (err) {
-		console.log(err);
 		return {
-			notFound: true,
+			redirect: {
+				destination: "/events",
+			},
 		};
 	}
 }
