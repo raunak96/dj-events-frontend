@@ -15,7 +15,10 @@ const Redirect = ({ user }) => {
 
 	return (
 		<div>
-			<p style={{ marginLeft: "25px" }}>Redirecting...</p>
+			<p style={{ marginLeft: "25px" }}>
+				You have been successfully logged in. You will be redirected in
+				a few seconds...
+			</p>
 		</div>
 	);
 };
