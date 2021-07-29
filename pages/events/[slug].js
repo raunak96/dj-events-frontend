@@ -1,47 +1,30 @@
-import { useRouter } from "next/router";
 import Layout from "components/Layout";
 import styles from "styles/Event.module.css";
-import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import { API_URL } from "config/";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
 import EventMap from "components/EventMap";
 
-const EventPage = ({ evt }) => {
-	// const router = useRouter();
-
-	// const deleteEvent = async () => {
-	// 	if (confirm("Are you sure you want to delete?")) {
-	// 		try {
-	// 			await axios.delete(`${API_URL}/events/${evt.id}`);
-	// 			router.push("/events");
-	// 		} catch (err) {
-	// 			toast.error(err.response.data);
-	// 		}
-	// 	}
-	// };
-
+const EventPage = ({
+	evt = {
+		name: "",
+		id: "",
+		address: "",
+		description: "",
+		venue: "",
+		performers: "",
+		date: "",
+		time: "",
+	},
+}) => {
 	return (
 		<Layout title={`${evt.name} Event`}>
 			<div className={styles.event}>
-				{/* <div className={styles.controls}>
-					<Link href={`/events/edit/${evt.id}`}>
-						<a>
-							<FaPencilAlt /> Edit Event
-						</a>
-					</Link>
-					<a href="#" className={styles.delete} onClick={deleteEvent}>
-						<FaTimes /> Delete Event
-					</a>
-				</div> */}
 				<span>
 					{new Date(evt.date).toDateString("en-IN")} at {evt.time}
 				</span>
 				<h1>{evt.name}</h1>
-				<ToastContainer />
 				<div className={styles.image}>
 					<Image
 						src={
@@ -78,11 +61,10 @@ export async function getStaticPaths() {
 		const paths = events.map(event => ({ params: { slug: event.slug } }));
 		return {
 			paths: paths,
-			fallback: false,
+			fallback: "blocking",
 		};
 	} catch (err) {
-		console.log(err);
-		return { paths: [{ params: { slug: "" } }], fallback: false };
+		return { paths: [{ params: { slug: "" } }], fallback: "blocking" };
 	}
 }
 
@@ -96,7 +78,19 @@ export async function getStaticProps({ params }) {
 			revalidate: 20,
 		};
 	} catch (err) {
-		console.log(err);
-		return { props: { evt: {} } };
+		return {
+			props: {
+				evt: {
+					name: "",
+					id: "",
+					address: "",
+					description: "",
+					venue: "",
+					performers: "",
+					date: "",
+					time: "",
+				},
+			},
+		};
 	}
 }

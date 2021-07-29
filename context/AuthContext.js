@@ -43,9 +43,8 @@ const AuthProvider = ({ children }) => {
 	const isLoggedIn = async () => {
 		try {
 			const { data: user } = await axios.get(`${NEXT_URL}/api/user`);
-			dispatch({ type: SETUSER, payload: user });
+			dispatch({ type: SETUSER, payload: { user } });
 		} catch (err) {
-			console.log(err);
 			dispatch({ type: SETUSER, payload: null });
 		}
 	};

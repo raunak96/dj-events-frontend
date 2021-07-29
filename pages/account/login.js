@@ -7,17 +7,17 @@ import { useContext, useEffect } from "react";
 import { FaGoogle } from "react-icons/fa";
 
 const LoginPage = () => {
-	const { login, error, currentUser } = useContext(AuthContext);
+	const { login, error, currentUser = undefined } = useContext(AuthContext);
 	const router = useRouter();
 	const handleSubmit = userData => {
 		login(userData);
 	};
 
-	// useEffect(() => {
-	// 	if (currentUser) router.push("/");
-	// }, [currentUser, router]);
+	useEffect(() => {
+		if (currentUser) router.replace("/account/dashboard");
+	}, [currentUser, router]);
 
-	return (
+	return currentUser === null ? (
 		<Layout title="Sign In">
 			<AuthForm onSubmit={handleSubmit} error={error} />
 			<p style={{ textAlign: "center" }}>OR</p>
@@ -29,6 +29,8 @@ const LoginPage = () => {
 				&nbsp;Sign in with Google
 			</a>
 		</Layout>
+	) : (
+		<p style={{ textAlign: "center" }}>Already Logged In.Redirecting...</p>
 	);
 };
 

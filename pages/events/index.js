@@ -52,9 +52,7 @@ const EventsPage = ({ events, total }) => {
 					);
 					setEvents({ filteredEvents: data, searchTerm: term });
 					setPage(0);
-				} catch (err) {
-					console.log(err);
-				}
+				} catch (err) {}
 			}, 800),
 		[]
 	);
@@ -126,10 +124,9 @@ export async function getStaticProps(context) {
 
 		return {
 			props: { events, total },
-			revalidate: 10,
+			revalidate: 20,
 		};
 	} catch (err) {
-		console.log(err);
 		return { props: { events: [], total: 0 } };
 	}
 }

@@ -31,7 +31,7 @@ const EventMap = ({ evt }) => {
 				setLng(coords[0]);
 				setLoading(false);
 			} catch (err) {
-				console.log(err);
+				setLoading(true);
 			}
 		};
 		getLatLang();

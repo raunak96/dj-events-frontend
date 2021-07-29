@@ -47,7 +47,6 @@ export async function getServerSideProps({ params, query, res }) {
 			props: { user: data.user },
 		};
 	} catch (err) {
-		console.log(err);
 		return {
 			props: { user: null },
 		};

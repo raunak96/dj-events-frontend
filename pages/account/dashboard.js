@@ -37,7 +37,7 @@ const DashboardPage = ({ events, token }) => {
 		<Layout
 			title={`${
 				currentUser
-					? `${currentUser.username} | Dashboard`
+					? `${currentUser.user.username} | Dashboard`
 					: "Dashboard"
 			} `}>
 			<div className={styles.dashboard}>
