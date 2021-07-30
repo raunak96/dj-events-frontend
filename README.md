@@ -33,7 +33,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### MODULE ALIASING WITH **jsonconfig.json** file
-    - Instead of importing commonly used files with path relative to root of project we can set alias for them in jsonconfig.json file.
+- Instead of importing commonly used files with path relative to root of project we can set alias for them in jsonconfig.json file.
 
 ## Deploy on Vercel
 
