@@ -8,7 +8,7 @@ import Header from "./Header";
 const Layout = ({ title, keywords, description, children }) => {
 	const router = useRouter();
 	return (
-		<>
+		<div className={styles.layout}>
 			<Head>
 				<title>{title}</title>
 				<meta name="description" content={description} />
@@ -18,7 +18,7 @@ const Layout = ({ title, keywords, description, children }) => {
 			{router.pathname === "/" && <Banner />}
 			<div className={styles.container}>{children}</div>
 			<Footer />
-		</>
+		</div>
 	);
 };
 

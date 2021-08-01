@@ -3,6 +3,9 @@
 	align-items: center;
 	justify-content: space-between;
 }
+.header h1 {
+	margin-bottom: 0;
+}
 .searchContainer {
 	display: flex;
 	align-items: center;
